@@ -41,6 +41,32 @@ def infix_to_postfix(infix_expr):
     return ' '.join(postfix_list)
 
 
+def postfix_eval(postfix_expr):
+    stack = Stack()
+    token_list = postfix_expr.split()
+
+    for token in token_list:
+        if token in string.digits:
+            stack.push(int(token))
+        else:
+            num2 = stack.pop()
+            num1 = stack.pop()
+            result = calc(token, num1, num2)
+            stack.push(result)
+    return stack.pop()
+
+
+def calc(op, n1, n2):
+    if op == '*':
+        return n1 * n2
+    elif op == '/':
+        return n1 / n2
+    elif op == '+':
+        return n1 + n2
+    else:
+        return n1 - n2
+
+
 if __name__ == '__main__':
     str1 = 'a * b + c'
     str2 = '( a + b ) * c'
@@ -50,3 +76,11 @@ if __name__ == '__main__':
     print(infix_to_postfix(str2))
     print(infix_to_postfix(str3))
     print(infix_to_postfix(str4))
+    expr1 = '5 6 * 4 +'
+    expr2 = '9 3 + 2 *'
+    expr3 = '1 2 * 3 4 * +'
+    expr4 = '1 2 + 3 4 + *'
+    print(postfix_eval(expr1))
+    print(postfix_eval(expr2))
+    print(postfix_eval(expr3))
+    print(postfix_eval(expr4))
