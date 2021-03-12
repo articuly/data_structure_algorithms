@@ -2,6 +2,7 @@
 
 from cost_time import cost_time
 import random
+import string
 
 
 # 清点法，复杂度n^2/2
@@ -73,13 +74,11 @@ def anagram_solution3(str1, str2):
 
 
 if __name__ == '__main__':
-    str_list = 'a b c d e f g h i j k l m n o p q r s t u v w x y z'.split()
-    str1 = ''
-    for i in range(20000):
-        str1 += random.choice(str_list)
-    lst2 = list(str1)
-    random.shuffle(lst2)
-    str2 = ''.join(lst2)
+    str_seq = string.ascii_lowercase
+    str1_list = random.choices(str_seq, k=100)
+    str1 = ''.join(str1_list)
+    random.shuffle(str1_list)
+    str2 = ''.join(str1_list)
     print(str1, str2)
 
     for i in range(3):
