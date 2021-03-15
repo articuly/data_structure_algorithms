@@ -77,8 +77,8 @@ def new_print_task(student_num):
 
 if __name__ == '__main__':
     quality_range = [1, 2]  # 打印质量，后者为前者消耗倍数
-    student_num = 10
-    max_pages = 20
+    student_num = 10  # 学生数量
+    max_pages = 20  # 最大打印页数
     average_waiting_list = []
     for i in range(100):
         average_waiting_list.append(simulation(3600, 10))
