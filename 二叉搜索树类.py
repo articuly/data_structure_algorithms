@@ -120,6 +120,68 @@ class BinarySearchTree:
                                                    current_node.right_child.right_child)
 
 
+class AVLTree(BinarySearchTree):
+    def _put(self, key, val, current_node):
+        if key < current_node.key:
+            if current_node.has_left_child():
+                self._put(key, val, current_node.left_child)
+            else:
+                current_node.left_child = TreeNode(key, val, parent=current_node)
+                self.update_balance(current_node.left_child)
+        else:
+            if current_node.has_right_child():
+                self._put(key, val, current_node.right_child)
+            else:
+                current_node.right_child = TreeNode(key, val, parent=current_node)
+                self.update_balance(current_node.right_child)
+
+    def update_balance(self, node):
+        if node.balance_factor > 1 or node.balance_factor < -1:
+            self.reblance(node)
+            return
+        if node.parent is not None:
+            if node.is_left_child():
+                node.parent.balance_factor += 1
+            elif node.is_right_child():
+                node.parent.balance_factor -= 1
+
+            if node.parent.balance_factor != 0:
+                self.update_balance(node.parent)
+
+    def reblance(self, node):
+        if node.balance_factor < 0:  # 右倾
+            if node.right_child.balance_factor > 0:  # 左倾
+                self.rotate_right(node.right_child)
+                self.rotate_left(node)
+            else:
+                self.rotate_left(node)
+        elif node.balance_factor > 0:
+            if node.left_child.balance_factor < 0:
+                self.rotate_left(node.left_child)
+                self.rotate_right(node)
+            else:
+                self.rotate_right(node)
+
+    def rotate_left(self, root):
+        new_root = root.right_child
+        root.right_child = new_root.left_child
+        if new_root.left_child is not None:
+            new_root.left_child.parent = root
+        new_root.parent = root.parent
+        if root.is_root():
+            self.root = new_root
+        else:
+            if root.is_left_child():
+                root.parent.left_child = new_root
+            else:
+                root.parent.right_child = new_root
+
+        new_root.left_child = root
+        root.pare = new_root
+        root.balance_factor = root.balance_factor + 1 - min(new_root.block_factor, 0)
+        new_root.balance_factor = new_root.balance_factor + 1 + max(root.balance_factor, 0)
+
+
 class TreeNode:
     def __init__(self, key, val, left=None, right=None, parent=None):
         self.key = key
